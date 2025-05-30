@@ -511,10 +511,76 @@
       gap: 2em;
       margin: 1.5em 0;
     }
+    .progress-container {
+      margin: 2em 0 1em 0;
+      text-align: center;
+    }
+    .progress-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1em;
+      margin-bottom: 0.3em;
+      color: #ffe066;
+      letter-spacing: 1px;
+    }
+    .progress-bar-bg {
+      width: 90vw;
+      max-width: 400px;
+      height: 16px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #a259ff33;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #a259ff, #ffb6ff, #ffe066);
+      border-radius: 10px;
+      transition: width 0.6s cubic-bezier(.4,2,.3,1);
+    }
+    .confetti-btn {
+      display: block;
+      margin: 2em auto 1em auto;
+      padding: 0.7em 1.5em;
+      font-size: 2em;
+      background: linear-gradient(90deg, #ffe066, #ffb6ff, #a259ff);
+      color: #fff;
+      border: none;
+      border-radius: 2em;
+      box-shadow: 0 4px 18px #a259ff44;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: pulseBtn 1.2s infinite alternate;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+    }
+    .confetti-btn:hover {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 32px #a259ff66;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 4px 18px #a259ff44; }
+      100% { box-shadow: 0 8px 32px #ffb6ff88; }
+    }
+    .bts-quote {
+      margin: 2em auto 1em auto;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.2em;
+      color: #fff;
+      text-shadow: 0 2px 8px #6e00ff44;
+      text-align: center;
+    }
+    .bts-credit {
+      display: block;
+      font-size: 0.9em;
+      color: #ffe066;
+      margin-top: 0.2em;
+      font-family: 'Montserrat', sans-serif;
+    }
   </style>
 </head>
 <body>
-  <canvas id="confetti-canvas"></canvas>
   <!-- Animated glowing hearts background -->
   <div class="hearts-bg"></div>
   <!-- Animated background shapes -->
@@ -524,8 +590,29 @@
   <!-- Countdown and wish sections -->
   <div class="glass-card" id="main-card">
     <h1 id="title">Countdown to a Special Day</h1>
-    <div id="countdown" aria-live="polite"></div>
+    
+    <!-- Countdown timer -->
+    <div id="countdown" aria-live="polite" style="text-align:center; font-size:2.3rem; margin-top:1em;"></div>
+    
+    <!-- Progress bar until birthday -->
+    <div class="progress-container">
+      <div class="progress-label">Time until your Birthday</div>
+      <div class="progress-bar-bg">
+        <div id="progress-bar" class="progress-bar-fill"></div>
+      </div>
+    </div>
+    
+    <!-- Confetti button bar -->
+    <button id="confetti-btn" class="confetti-btn" aria-label="Celebrate!">
+      🎉 🎊 🥳 🎂 🎶 💜
+    </button>
+    
+    <!-- BTS Quote -->
+    <div class="bts-quote" id="bts-quote" style="margin-top:2em;">
+      <span></span>
+    </div>
   </div>
+
   <h1 id="birthday-msg" class="hidden sparkle-text">🎉 Happy Birthday! 🎂</h1>
   <div id="wish-extra" class="hidden">
     <div class="floating-hearts">
@@ -569,10 +656,20 @@
     </div>
   </div>
 
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:100;"></canvas>
+
   <script>
+    // For preview: set the countdown to 10 seconds from now
+    // const targetDate = Date.now() + 10000; // 10 seconds from now
+    // Start the progress bar from now (so it fills over 10 seconds)
+    // const startDate = Date.now();
+
     // Set the countdown to June 4, 12:00am of the current year
     const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
-    // Months are 0-indexed: 5 = June
+    // Start the progress bar from 5 days before the target date
+    const startDate = targetDate - 5 * 24 * 60 * 60 * 1000; // 5 days in ms
+
     const countdownEl = document.getElementById("countdown");
     const birthdayMsg = document.getElementById("birthday-msg");
     const wishExtra = document.getElementById("wish-extra");
@@ -593,7 +690,7 @@
 
       if (distance <= 0) {
         clearInterval(timer);
-        countdownEl.classList.add("hidden");
+        countdownEl.innerHTML = "🎉 It's Varsha's Birthday! 🎉";
         titleEl.classList.add("hidden");
         mainCard.classList.add("hidden");
         birthdayMsg.classList.remove("hidden");
@@ -607,8 +704,18 @@
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        countdownEl.innerHTML = 
+          `<span style="color:#ffe066;">${days}d</span> 
+           <span style="color:#ffb6ff;">${hours}h</span> 
+           <span style="color:#a259ff;">${minutes}m</span> 
+           <span style="color:#fff;">${seconds}s</span> remaining`;
       }
+
+      // Progress bar logic: from 5 days before birthday to birthday
+      const total = targetDate - startDate;
+      const elapsed = now - startDate;
+      let percent = Math.min(Math.max((elapsed / total) * 100, 0), 100);
+      document.getElementById('progress-bar').style.width = percent + "%";
     }
 
     const timer = setInterval(updateCountdown, 1000);
@@ -692,6 +799,142 @@
       document.getElementById('letter-page').classList.add('hidden');
       document.body.style.overflow = "";
     };
+
+    // Confetti rain on button click for 2 seconds, then fade out
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiActive = false;
+    let fadeAlpha = 1;
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    resizeConfettiCanvas();
+    window.addEventListener('resize', resizeConfettiCanvas);
+
+    function createConfettiParticles(amount = 80) {
+      const colors = ['#ffe066', '#ffb6ff', '#a259ff', '#6e00ff', '#fff', '#ff69b4'];
+      confettiParticles = [];
+      for (let i = 0; i < amount; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * -confettiCanvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 100 + 10,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 5,
+          tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+          tiltAngle: 0,
+          speed: Math.random() * 2 + 2
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      ctx.globalAlpha = fadeAlpha;
+      confettiParticles.forEach(p => {
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.y += p.speed;
+        p.x += Math.sin(p.d);
+        p.tilt = Math.sin(p.tiltAngle) * 15;
+
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function animateConfetti() {
+      if (!confettiActive && fadeAlpha <= 0) {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        return;
+      }
+      drawConfetti();
+      requestAnimationFrame(animateConfetti);
+    }
+
+    function startConfettiRain() {
+      createConfettiParticles(80);
+      confettiActive = true;
+      fadeAlpha = 1;
+      animateConfetti();
+
+      // Let confetti fall for 2 seconds, then fade out
+      setTimeout(() => {
+        confettiActive = false;
+        // Fade out over 1s
+        let fadeInterval = setInterval(() => {
+          fadeAlpha -= 0.07;
+          if (fadeAlpha <= 0) {
+            fadeAlpha = 0;
+            clearInterval(fadeInterval);
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          }
+        }, 50);
+      }, 2000);
+    }
+
+    // Move confetti particles if active
+    function updateConfettiParticles() {
+      if (confettiActive) {
+        confettiParticles.forEach(p => {
+          p.tiltAngle += p.tiltAngleIncrement;
+          p.y += p.speed;
+          if (p.y > confettiCanvas.height) {
+            p.x = Math.random() * confettiCanvas.width;
+            p.y = Math.random() * -20;
+          }
+        });
+      }
+      requestAnimationFrame(updateConfettiParticles);
+    }
+    updateConfettiParticles();
+
+    // Add click event to confetti button
+    document.getElementById('confetti-btn').addEventListener('click', startConfettiRain);
+
+    // BTS Quotes (local only, 25 quotes)
+    const fallbackQuotes = [
+      { quote: "Go on your path, even if you live for a day.", credit: "– BTS, Jimin" },
+      { quote: "If you want to love others, I think you should love yourself first.", credit: "– BTS, RM" },
+      { quote: "Teamwork makes the dream work.", credit: "– BTS, RM" },
+      { quote: "Dream, hope, keep going for your dreams.", credit: "– BTS, Jungkook" },
+      { quote: "You can’t just come into someone’s life, make them feel special, and then leave.", credit: "– BTS, Taehyung" },
+      { quote: "Effort makes you. You’ll regret someday if you don’t do your best now.", credit: "– BTS, Jungkook" },
+      { quote: "Don’t be trapped in someone else’s dream.", credit: "– BTS, V" },
+      { quote: "Life is a sculpture that you cast as you make mistakes and learn from them.", credit: "– BTS, RM" },
+      { quote: "I have come to love myself for who I am, for who I was, and for who I hope to become.", credit: "– BTS, RM" },
+      { quote: "The dawn right before the sun rises is the darkest.", credit: "– BTS, V" },
+      { quote: "You’re the answer to all my doubts.", credit: "– BTS, Jin" },
+      { quote: "Let’s not push off the things we need to do today for tomorrow.", credit: "– BTS, J-Hope" },
+      { quote: "No one else can take responsibility for your life.", credit: "– BTS, Suga" },
+      { quote: "Even when this rain stops, when clouds go away, I stand here, just the same.", credit: "– BTS, J-Hope" },
+      { quote: "We are all different, but that’s what makes us beautiful.", credit: "– BTS, Jimin" },
+      { quote: "You can’t stop me loving myself.", credit: "– BTS, Idol" },
+      { quote: "I’m the one I should love in this world.", credit: "– BTS, Jin" },
+      { quote: "If you can’t fly, then run. Today we will survive.", credit: "– BTS, Suga" },
+      { quote: "Don’t be afraid, love is the way.", credit: "– BTS, J-Hope" },
+      { quote: "We were born to be real, not to be perfect.", credit: "– BTS, RM" },
+      { quote: "Happiness is not something you have to achieve. You can still feel happy during the process of achieving something.", credit: "– BTS, RM" },
+      { quote: "Those who want to look more youthful should live life with a young heart.", credit: "– BTS, Jin" },
+      { quote: "You’re too young to let the world break you.", credit: "– BTS, V" },
+      { quote: "The only time you should ever look back is to see how far you’ve come.", credit: "– BTS, RM" },
+      { quote: "Love myself, love yourself, peace.", credit: "– BTS, Suga" }
+    ];
+
+    // Pick a random quote on each page load
+    const quoteData = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+    document.getElementById('bts-quote').innerHTML = `
+      <span>${quoteData.quote}</span>
+      <span class="bts-credit">${quoteData.credit}</span>
+    `;
   </script>
 </body>
 </html>
