@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Countdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <!-- Google Fonts for handwriting effect -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Caveat:wght@700&family=Montserrat:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      height: auto;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e003a 0%, #6e00ff 100%);
+      color: white;
+      min-height: 100vh;
+      max-height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    /* 1. Floating shapes always visible as background */
+    .bg-shape {
+      position: fixed;
+      z-index: 1;
+      opacity: 0.18;
+      border-radius: 50%;
+      filter: blur(8px);
+      animation: float 8s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .bg-shape1 {
+      width: 180px; height: 180px;
+      background: linear-gradient(135deg, #ffb6ff 0%, #6e00ff 100%);
+      top: 10%; left: 10%;
+      animation-delay: 0s;
+    }
+    .bg-shape2 {
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, #00fff0 0%, #6e00ff 100%);
+      bottom: 15%; right: 12%;
+      animation-delay: 2s;
+    }
+    .bg-shape3 {
+      width: 90px; height: 90px;
+      background: linear-gradient(135deg, #ffe066 0%, #ffb6ff 100%);
+      top: 60%; left: 70%;
+      animation-delay: 4s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-30px) scale(1.1);}
+    }
+    .glass-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      padding: 2.8em 3.5em;
+      margin-top: 2em;
+      animation: fadeIn 1.2s;
+      overflow: hidden;
+    }
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08) 0%, rgba(110,0,255,0.10) 100%);
+      z-index: 0;
+      pointer-events: none;
+      animation: shine 3s linear infinite;
+    }
+    @keyframes shine {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+    h1#title, #countdown {
+      position: relative;
+      z-index: 1;
+    }
+    h1#title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.7rem;
+      margin: 0.5em 0 0.2em 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 16px #6e00ff55;
+      animation: fadeIn 1.2s;
+    }
+    #countdown {
+      font-size: 2.3rem;
+      margin-top: 1em;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px #00000044;
+      animation: fadeIn 1.2s;
+    }
+    #birthday-msg {
+      font-size: 2.8rem;
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 1.5em;
+      color: #fff;
+      text-shadow: 0 0 24px #ffb6ff, 0 0 8px #6e00ff;
+      animation: fadeInGlow 2s;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hidden {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInGlow {
+      from { opacity: 0; text-shadow: none;}
+      to { opacity: 1; text-shadow: 0 0 24px #ffb6ff, 0 0 8px #6e00ff;}
+    }
+    /* Glowing animated hearts background */
+    .hearts-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hearts-bg::before, .hearts-bg::after {
+      content: '';
+      position: absolute;
+      width: 100vw; height: 100vh;
+      left: 0; top: 0;
+      background: url('https://svgshare.com/i/14wX.svg') repeat;
+      opacity: 0.12;
+      animation: hearts-move 18s linear infinite alternate;
+    }
+    .hearts-bg::after {
+      opacity: 0.18;
+      filter: blur(2px);
+      animation-duration: 24s;
+      animation-direction: alternate-reverse;
+    }
+    @keyframes hearts-move {
+      0% { background-position: 0 0; }
+      100% { background-position: 120px 80px; }
+    }
+    /* Sparkle animation for birthday message */
+    .sparkle-text {
+      position: relative;
+      animation: fadeInGlow 2s;
+    }
+    .sparkle-text::after {
+      content: "✨";
+      position: absolute;
+      right: -2.2em;
+      top: 0.1em;
+      font-size: 1.5em;
+      opacity: 0.7;
+      animation: sparkle 1.2s infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes sparkle {
+      0% { opacity: 0.7; transform: scale(1) rotate(0deg);}
+      100% { opacity: 1; transform: scale(1.3) rotate(20deg);}
+    }
+    /* Animated heart emoji */
+    .heart-emoji {
+      display: inline-block;
+      font-size: 2.2rem;
+      animation: heartBeat 1.2s infinite;
+      margin-top: 0.5em;
+    }
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1);}
+      20% { transform: scale(1.2);}
+      40% { transform: scale(0.95);}
+      60% { transform: scale(1.1);}
+      80% { transform: scale(0.98);}
+    }
+    .wish-text {
+      font-size: 1.5rem;
+      margin: 1em 0 0 0;
+      animation: fadeIn 1.5s 0.5s both;
+      color: #fff;
+      text-shadow: 0 0 16px #ffb6ff, 0 0 8px #6e00ff;
+    }
+    .restart-btn {
+      margin-top: 1.5em;
+      padding: 0.7em 2em;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(90deg,#6e00ff,#ffb6ff);
+      color: #fff;
+      box-shadow: 0 2px 12px #6e00ff44;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .restart-btn:hover {
+      background: linear-gradient(90deg,#ffb6ff,#6e00ff);
+      transform: scale(1.07);
+    }
+    .floating-hearts {
+      position: relative;
+      width: 100%;
+      height: 60px;
+      margin-bottom: -1em;
+      pointer-events: none;
+    }
+    .floating-heart {
+      position: absolute;
+      bottom: 0;
+      font-size: 2.2rem;
+      opacity: 0.85;
+      animation: floatHeart 3.5s infinite ease-in-out;
+      filter: drop-shadow(0 0 12px #ffb6ff);
+    }
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(1);}
+      50% { transform: translateY(-28px) scale(1.15);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    .enhanced-fade {
+      animation: enhancedFadeIn 2.2s;
+    }
+    @keyframes enhancedFadeIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95);}
+      to { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    .big-heart {
+      font-size: 2.8rem;
+      display: inline-block;
+      animation: heartBeat 1.2s infinite, glowHeart 2s infinite alternate;
+      margin-top: 0.5em;
+      filter: drop-shadow(0 0 18px #ffb6ff) drop-shadow(0 0 8px #6e00ff);
+    }
+    @keyframes glowHeart {
+      from { filter: drop-shadow(0 0 8px #ffb6ff);}
+      to { filter: drop-shadow(0 0 24px #ffb6ff) drop-shadow(0 0 12px #6e00ff);}
+    }
+    .dreams-come-true {
+      display: inline-block;
+      margin: 1em 0 0.2em 0;
+      font-size: 1.2em;
+      color: #ffe066;
+      text-shadow: 0 0 12px #fff6b0, 0 0 8px #a259ff;
+      animation: dreamsFadeIn 2.2s 1.2s both;
+      letter-spacing: 1px;
+    }
+    .dreams-come-true .star {
+      display: inline-block;
+      animation: twinkle 1.2s infinite alternate;
+      margin: 0 0.2em;
+      font-size: 1.3em;
+      filter: drop-shadow(0 0 8px #ffe066);
+    }
+    .dreams-come-true .star:last-child {
+      animation-delay: 0.6s;
+    }
+    .dreams-text {
+      animation: rainbowText 2.5s linear infinite alternate;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ffe066, #ffb6ff, #a259ff, #6e00ff, #ffe066);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    @keyframes dreamsFadeIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95);}
+      to { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.7; transform: scale(1);}
+      100% { opacity: 1; transform: scale(1.3) rotate(10deg);}
+    }
+    @keyframes rainbowText {
+      0% { filter: hue-rotate(0deg);}
+      100% { filter: hue-rotate(360deg);}
+    }
+    .letter-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      margin: 2em 0;
+      z-index: 2;
+      position: relative;
+    }
+    .letter-paper {
+      background: #fffbe9;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #ffe066;
+      padding: 2.5em 2em 2em 2.5em;
+      max-width: 540px;
+      width: 95vw;
+      min-height: 320px;
+      font-family: 'Dancing Script', 'Caveat', 'Pacifico', cursive, 'Segoe Script', sans-serif;
+      font-size: 1.18em;
+      color: #4b2e83;
+      border: 2px solid #ffe066;
+      position: relative;
+      overflow: hidden;
+    }
+    .typed-letter {
+      white-space: pre-wrap;
+      font-family: inherit;
+      font-size: 1.18em;
+      color: #4b2e83;
+      background: none;
+      margin: 0;
+      letter-spacing: 0.02em;
+      line-height: 1.7;
+      min-height: 320px;
+      animation: fadeIn 1.5s;
+    }
+    .letter-paper::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 23px,
+        #ffe06633 24px,
+        transparent 25px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+    .birthday-letter-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      margin: 2em 0 0.5em 0;
+      z-index: 2;
+      position: relative;
+    }
+    .birthday-letter-paper {
+      background: #fffbe9;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #ffe066;
+      padding: 2.5em 2em 2em 2.5em;
+      max-width: 540px;
+      width: 95vw;
+      font-family: 'Dancing Script', 'Caveat', 'Pacifico', cursive, 'Segoe Script', sans-serif;
+      font-size: 1.18em;
+      color: #4b2e83;
+      border: 2px solid #ffe066;
+      position: relative;
+      overflow: hidden;
+    }
+    .birthday-letter-paper::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 23px,
+        #ffe06633 24px,
+        transparent 25px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+    .birthday-letter-content {
+      position: relative;
+      z-index: 2;
+      font-family: inherit;
+      font-size: 1.18em;
+      color: #4b2e83;
+      background: none;
+      margin: 0;
+      letter-spacing: 0.02em;
+      line-height: 1.7;
+      min-height: 320px;
+      animation: fadeIn 2s;
+    }
+    .birthday-letter-content p {
+      margin: 0 0 1.1em 0;
+    }
+    .animated-letter-btn {
+      display: inline-block;
+      margin: 2em auto 1em auto;
+      padding: 0.9em 2.2em;
+      font-size: 1.2em;
+      font-family: 'Montserrat', cursive, sans-serif;
+      background: linear-gradient(90deg, #a259ff, #ffb6ff, #ffe066);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 4px 18px #a259ff44;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: pulseBtn 1.2s infinite alternate;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .animated-letter-btn:hover {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 32px #a259ff66;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 4px 18px #a259ff44; }
+      100% { box-shadow: 0 8px 32px #ffb6ff88; }
+    }
+    .letter-page {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(30,0,58,0.85);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      transition: opacity 0.4s;
+    }
+    .letter-content {
+      margin: 0 auto;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      padding: 2.5em 2em 2em 2.5em;
+      font-family: 'Dancing Script', cursive, 'Montserrat', 'Segoe UI', sans-serif;
+      color: #fff;
+      font-size: 1.45em;
+      letter-spacing: 0.02em;
+      line-height: 1.7;
+      text-align: center;
+      white-space: pre-wrap;
+      min-height: 120px;
+      position: relative;
+      animation: fadeIn 1.2s;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Add this to your <style> section for mobile responsiveness */
+    @media (max-width: 600px) {
+      body, html {
+        font-size: 16px;
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      .glass-card,
+      .glass-letter-message,
+      .birthday-letter-paper,
+      .handwritten-letter {
+        max-width: 98vw;
+        padding: 1.2em 0.7em 1.2em 0.7em;
+        font-size: 1em !important;
+      }
+      .wish-photo {
+        width: 80px !important;
+        height: 80px !important;
+      }
+      .animated-letter-btn {
+        width: 90vw;
+        font-size: 1em;
+        padding: 0.8em 0.5em;
+      }
+      #countdown {
+        font-size: 1.3rem !important;
+      }
+      #birthday-msg {
+        font-size: 1.5rem !important;
+      }
+      .wish-flex-row {
+        flex-direction: column;
+        gap: 0.7em;
+      }
+      .wish-photo {
+        width: 80px !important;
+        height: 80px !important;
+      }
+      .animated-letter-btn {
+        margin-left: 0 !important;
+        width: 90vw;
+        font-size: 1em;
+        padding: 0.8em 0.5em;
+      }
+    }
+    .wish-flex-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2em;
+      margin: 1.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <!-- Animated glowing hearts background -->
+  <div class="hearts-bg"></div>
+  <!-- Animated background shapes -->
+  <div class="bg-shape bg-shape1"></div>
+  <div class="bg-shape bg-shape2"></div>
+  <div class="bg-shape bg-shape3"></div>
+  <!-- Countdown and wish sections -->
+  <div class="glass-card" id="main-card">
+    <h1 id="title">Countdown to a Special Day</h1>
+    <div id="countdown" aria-live="polite"></div>
+  </div>
+  <h1 id="birthday-msg" class="hidden sparkle-text">🎉 Happy Birthday! 🎂</h1>
+  <div id="wish-extra" class="hidden">
+    <div class="floating-hearts">
+      <span class="floating-heart" style="left:10%;">💖</span>
+      <span class="floating-heart" style="left:80%; animation-delay:1.2s;">💗</span>
+      <span class="floating-heart" style="left:50%; animation-delay:0.7s;">💜</span>
+    </div>
+    <div class="wish-flex-row">
+      <img 
+        src="varsha.jpg"
+        alt="Varsha" 
+        class="wish-photo"
+        style="width:120px;height:120px;object-fit:cover;border-radius:50%;box-shadow:0 0 24px #a259ff88, 0 0 8px #ffb6ff;">
+      <button id="open-letter-btn" class="animated-letter-btn hidden" style="margin-left:2em;">A letter by me</button>
+    </div>
+    <!-- Replace your wish text block with this for custom fonts: -->
+    <p class="wish-text enhanced-fade">
+      <span style="font-family: 'Dancing Script', cursive; font-size:2.2em; display:block; margin-bottom:0.3em;">
+        Happy Birthday, Varsha!
+      </span>
+      <span style="font-family: 'Montserrat', sans-serif; font-size:1.3em; display:block; margin-bottom:0.2em;">
+        May your year be as bright and joyful as a BTS concert.
+      </span>
+      <span style="font-family: 'Caveat', cursive; font-size:1.2em; display:block; margin-bottom:0.2em;">
+        Keep shining and I'll cherish u as my best friend and adorable sister
+      </span>
+      <span style="font-family: 'Pacifico', cursive; font-size:1.3em; color:#ffe066; display:block; margin:0.5em 0;">
+        🌟 May your dreams come true! 🌟
+      </span>
+      <span style="font-family: 'Dancing Script', cursive; font-size:2.2em; color:#a259ff; display:block;">
+        💜
+      </span>
+    </p>
+  </div>
+
+  <!-- 2. Add this hidden full-page overlay for the letter: -->
+  <div id="letter-page" class="letter-page hidden">
+    <div class="glass-letter-message letter-content">
+      <p id="typed-letter"></p>
+      <button id="back-btn" class="animated-letter-btn" style="margin-top:2em;">Back</button>
+    </div>
+  </div>
+
+  <script>
+    // Set countdown to 10 seconds from page load
+    const targetDate = new Date(Date.now() + 10000).getTime();
+    const countdownEl = document.getElementById("countdown");
+    const birthdayMsg = document.getElementById("birthday-msg");
+    const wishExtra = document.getElementById("wish-extra");
+    const titleEl = document.getElementById("title");
+    const mainCard = document.getElementById("main-card");
+
+    function showLetterAfterDelay() {
+      setTimeout(() => {
+        document.getElementById('birthday-letter-container').classList.remove('hidden');
+        // Optionally, scroll to the letter smoothly
+        document.getElementById('birthday-letter-container').scrollIntoView({ behavior: 'smooth' });
+      }, 10000); // 10 seconds = 10000 ms
+    }
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        clearInterval(timer);
+        countdownEl.classList.add("hidden");
+        titleEl.classList.add("hidden");
+        mainCard.classList.add("hidden");
+        birthdayMsg.classList.remove("hidden");
+        wishExtra.classList.remove("hidden");
+        startConfetti();
+        // Show the "A letter by me" button after countdown finishes
+        document.getElementById('open-letter-btn').classList.remove('hidden');
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+
+    const timer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Confetti setup (responsive, lower amount)
+    function startConfetti() {
+      const canvas = document.getElementById("confetti-canvas");
+      const ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Lowered confetti amount to 60
+      const confetti = Array.from({ length: 60 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 100 + 10,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+        tilt: Math.random() * 10 - 5,
+        tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+        tiltAngle: 0
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach(p => {
+          p.tiltAngle += p.tiltAngleIncrement;
+          p.y += (Math.cos(p.d) + 3 + p.r / 2) * 0.5;
+          p.x += Math.sin(p.d);
+          p.tilt = Math.sin(p.tiltAngle) * 15;
+
+          // Respawn confetti at the top when it falls out of view
+          if (p.y > canvas.height) {
+            p.x = Math.random() * canvas.width;
+            p.y = -10;
+          }
+
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    const letterText = `Happy Birthday! 🎉
+    Your presence has always been a light in my life, like a chosen sister. I cherish our simple moments and your contagious joy, especially when you talked about BTS. Though we're on new paths, you're often in my thoughts. Meeting you, with your genuine compassion, has truly impacted me. I'm celebrating you, dear friend, and wish you all the happiness you give to others. 💜`;
+
+    const speed = 18; // ms per character for slow writing
+
+    document.getElementById('open-letter-btn').onclick = function() {
+      document.getElementById('letter-page').classList.remove('hidden');
+      document.body.style.overflow = "hidden";
+      // Typing effect
+      const letterDiv = document.getElementById('typed-letter');
+      letterDiv.textContent = "";
+      let i = 0;
+      function typeLetter() {
+        if (i <= letterText.length) {
+          letterDiv.textContent = letterText.slice(0, i);
+          setTimeout(typeLetter, speed + (letterText[i] === "\n" ? 120 : 0));
+          i++;
+        }
+      }
+      typeLetter();
+    };
+
+    document.getElementById('back-btn').onclick = function() {
+      document.getElementById('letter-page').classList.add('hidden');
+      document.body.style.overflow = "";
+    };
+  </script>
+</body>
+</html>
