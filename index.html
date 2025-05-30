@@ -681,15 +681,10 @@
   <audio id="countdown-music" src="loop.mp3" preload="auto" loop></audio>
 
   <script>
-    // For preview: set the countdown to 10 seconds from now
-    const targetDate = Date.now() + 10000; // 10 seconds from now
-    // Start the progress bar from now (so it fills over 10 seconds)
-    const startDate = Date.now();
-
     // Set the countdown to June 4, 12:00am of the current year
-    // const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
-    // // Start the progress bar from 5 days before the target date
-    // const startDate = targetDate - 5 * 24 * 60 * 60 * 1000; // 5 days in ms
+    const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
+    // Start the progress bar from 5 days before the target date
+    const startDate = targetDate - 5 * 24 * 60 * 60 * 1000; // 5 days in ms
 
     const countdownEl = document.getElementById("countdown");
     const birthdayMsg = document.getElementById("birthday-msg");
