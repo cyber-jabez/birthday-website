@@ -659,10 +659,12 @@
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:100;"></canvas>
 
-  <!-- Add these audio elements just before your closing </body> tag -->
-<audio id="confetti-sound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3b.mp3" preload="auto"></audio>
-<audio id="birthday-sound" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c6e5e4b4.mp3" preload="auto"></audio>
-<audio id="countdown-music" src="loop.mp3" preload="auto" loop></audio>
+  <!-- Remove all previous audio unlock and play logic, and use this universal handler -->
+
+  <!-- Place these audio elements before your closing </body> tag -->
+  <audio id="confetti-sound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3b.mp3" preload="auto"></audio>
+  <audio id="birthday-sound" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12c6e5e4b4.mp3" preload="auto"></audio>
+  <audio id="countdown-music" src="loop.mp3" preload="auto" loop></audio>
 
   <script>
     // For preview: set the countdown to 10 seconds from now
@@ -944,12 +946,41 @@
       <span class="bts-credit">${quoteData.credit}</span>
     `;
 
+    // Universal unlock and play on first interaction
+    let soundUnlocked = false;
+    function unlockAndPlayAllAudio() {
+      if (soundUnlocked) return;
+      soundUnlocked = true;
+
+      // Try to play and pause all audio to unlock them
+      ['confetti-sound', 'birthday-sound', 'countdown-music'].forEach(id => {
+        const audio = document.getElementById(id);
+        if (audio) {
+          audio.volume = 0.5;
+          audio.play().then(() => audio.pause()).catch(()=>{});
+        }
+      });
+
+      // Start countdown music after unlock
+      setTimeout(() => {
+        const music = document.getElementById('countdown-music');
+        if (music) {
+          music.currentTime = 0;
+          music.volume = 0.5;
+          music.play().catch(()=>{});
+        }
+      }, 200);
+    }
+
+    // Attach to any click/touch anywhere
+    window.addEventListener('pointerdown', unlockAndPlayAllAudio, { once: true });
+
     // Play confetti sound when confetti button is clicked
     function playConfettiSound() {
       const confettiAudio = document.getElementById('confetti-sound');
       if (confettiAudio) {
         confettiAudio.currentTime = 0;
-        confettiAudio.play();
+        confettiAudio.play().catch(()=>{});
       }
     }
 
@@ -958,7 +989,7 @@
       const birthdayAudio = document.getElementById('birthday-sound');
       if (birthdayAudio) {
         birthdayAudio.currentTime = 0;
-        birthdayAudio.play();
+        birthdayAudio.play().catch(()=>{});
       }
     }
 
@@ -967,7 +998,7 @@
       const music = document.getElementById('countdown-music');
       if (music) {
         music.volume = 0.5;
-        music.play();
+        music.play().catch(()=>{});
       }
     }
 
@@ -979,23 +1010,6 @@
         music.currentTime = 0;
       }
     }
-
-    // Start music on first user interaction (for autoplay policy)
-    function enableMusicOnInteraction() {
-      // Play and immediately pause all audio to "unlock" them
-      ['confetti-sound', 'birthday-sound', 'countdown-music'].forEach(id => {
-        const audio = document.getElementById(id);
-        if (audio) {
-          audio.volume = 0.5;
-          audio.play().then(() => audio.pause());
-        }
-      });
-      playCountdownMusic();
-      document.removeEventListener('click', enableMusicOnInteraction);
-      document.removeEventListener('touchstart', enableMusicOnInteraction);
-    }
-    document.addEventListener('click', enableMusicOnInteraction);
-    document.addEventListener('touchstart', enableMusicOnInteraction);
   </script>
 </body>
 </html>
