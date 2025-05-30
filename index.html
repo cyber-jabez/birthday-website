@@ -570,13 +570,15 @@
   </div>
 
   <script>
-    // Set countdown to 10 seconds from page load
-    const targetDate = new Date(Date.now() + 10000).getTime();
+    // Set the countdown to June 4, 12:00am of the current year
+    const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
+    // Months are 0-indexed: 5 = June
     const countdownEl = document.getElementById("countdown");
     const birthdayMsg = document.getElementById("birthday-msg");
     const wishExtra = document.getElementById("wish-extra");
     const titleEl = document.getElementById("title");
     const mainCard = document.getElementById("main-card");
+
 
     function showLetterAfterDelay() {
       setTimeout(() => {
