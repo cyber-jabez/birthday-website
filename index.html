@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Birthday Countdown</title>
+  <meta name="viewport" content="width=1024">
+  <title>Countdown</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
   <!-- Google Fonts for handwriting effect -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Caveat:wght@700&family=Montserrat:wght@700&family=Pacifico&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
     .bg-shape {
       position: fixed;
       z-index: 1;
-      opacity: 0.18;
+      opacity: 0.20;
       border-radius: 50%;
       filter: blur(8px);
       animation: float 8s ease-in-out infinite alternate;
@@ -58,7 +58,7 @@
     }
     @keyframes float {
       0% { transform: translateY(0) scale(1);}
-      100% { transform: translateY(-30px) scale(1.1);}
+      100% { transform: translateY(-50px) scale(1.4);}
     }
     .glass-card {
       position: relative;
@@ -278,7 +278,7 @@
     .dreams-text {
       animation: rainbowText 2.5s linear infinite alternate;
       font-weight: bold;
-      background: linear-gradient(90deg, #ffe066, #ffb6ff, #a259ff, #6e00ff, #ffe066);
+      background: linear-gradient(90deg, #ffdd19, #ffb6ff, #a259ff, #6e00ff, #ffe066);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -519,7 +519,7 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 1.1em;
       margin-bottom: 0.3em;
-      color: #ffe066;
+      color: #ddda39;
       letter-spacing: 1px;
     }
     .progress-bar-bg {
@@ -648,10 +648,10 @@
         Happy Birthday, Varsha!
       </span>
       <span style="font-family: 'Montserrat', sans-serif; font-size:1.3em; display:block; margin-bottom:0.2em;">
-        May your year be as bright and joyful as a BTS concert.
+        May this year be bright and joyful.
       </span>
       <span style="font-family: 'Caveat', cursive; font-size:1.2em; display:block; margin-bottom:0.2em;">
-        Keep shining and I'll cherish u as my best friend and adorable sister
+        Keep shining and I'll cherish u as my best friend and adorable sister always
       </span>
       <span style="font-family: 'Pacifico', cursive; font-size:1.3em; color:#ffe066; display:block; margin:0.5em 0;">
         🌟 May your dreams come true! 🌟
@@ -681,7 +681,7 @@
   <audio id="countdown-music" src="loop.mp3" preload="auto" loop></audio>
 
   <script>
-    // Set the countdown to June 4, 12:00am of the current year
+    // Set the countdown to May 30, 2:15pm of the current year
     const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
     // Start the progress bar from 5 days before the target date
     const startDate = targetDate - 5 * 24 * 60 * 60 * 1000; // 5 days in ms
@@ -792,9 +792,9 @@
     }
 
     const letterText = `Happy Birthday! 🎉
-    Your presence has always been a light in my life, like a chosen sister. I cherish our simple moments and your contagious joy, especially when you talked about BTS. Though we're on new paths, you're often in my thoughts. Meeting you, with your genuine compassion, has truly impacted me. I'm celebrating you, dear friend, and wish you all the happiness you give to others. 💜`;
-
-    const speed = 18; // ms per character for slow writing
+    Your presence has always been a light in my life, like a chosen sister. I cherish our simple moments and your adorable joy, especially when you talked about BTS. Though we're on new paths, you're often in my thoughts. Meeting you, with your genuine compassion, has truly impacted me. Dear VARSHA, I wish you all the happiness you give to others come back to u. 💜`;
+    
+    const speed = 25; // ms per character for slow writing
 
     document.getElementById('open-letter-btn').onclick = function() {
       document.getElementById('letter-page').classList.remove('hidden');
@@ -1042,8 +1042,8 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(30,0,58,0.85);
-    color: #ffe066;
+    background: rgba(59, 1, 114, 0.85);
+    color: #d4aa00;
     text-align: center;
     font-size: 1.3em;
     padding: 1em 0 1.2em 0;
