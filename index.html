@@ -982,6 +982,14 @@
 
     // Start music on first user interaction (for autoplay policy)
     function enableMusicOnInteraction() {
+      // Play and immediately pause all audio to "unlock" them
+      ['confetti-sound', 'birthday-sound', 'countdown-music'].forEach(id => {
+        const audio = document.getElementById(id);
+        if (audio) {
+          audio.volume = 0.5;
+          audio.play().then(() => audio.pause());
+        }
+      });
       playCountdownMusic();
       document.removeEventListener('click', enableMusicOnInteraction);
       document.removeEventListener('touchstart', enableMusicOnInteraction);
