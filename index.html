@@ -17,7 +17,8 @@
       margin: 0;
       padding: 0;
       font-family: 'Roboto', 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e003a 0%, #6e00ff 100%);
+      /* Remove the static background */
+      /* background: linear-gradient(135deg, #1e003a 0%, #6e00ff 100%); */
       color: white;
       min-height: 100vh;
       max-height: 100vh;
@@ -27,6 +28,27 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      /* Add animated gradient background */
+      background: linear-gradient(120deg, #310c63, #1e003a, #3a1c71, #331b4b, #480658, #5f0e19);
+      background-size: 400% 400%;
+      animation: gradientBG 38s ease-in-out infinite;
+    }
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+      25% {
+        background-position: 50% 100%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      75% {
+        background-position: 50% 0%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
     /* 1. Floating shapes always visible as background */
     .bg-shape {
