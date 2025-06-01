@@ -65,10 +65,8 @@
       z-index: 2;
       background: rgba(255, 255, 255, 0.18);
       border-radius: 28px;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37), 0 0 40px #7cf6ff55;
+      border: 2px solid #7cf6ff88;
       padding: 2.8em 3.5em;
       margin-top: 2em;
       animation: fadeIn 1.2s;
@@ -102,12 +100,24 @@
       animation: fadeIn 1.2s;
     }
     #countdown {
-      font-size: 2.3rem;
-      margin-top: 1em;
+      font-size: 2.7rem;
       font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ffe066, #ffb6ff, #a259ff, #6e00ff, #ffe066);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientMove 4s ease-in-out infinite;
+      text-shadow: 0 0 24px #ffb6ff, 0 0 8px #6e00ff;
       letter-spacing: 2px;
-      text-shadow: 0 2px 8px #00000044;
+      margin-top: 1em;
       animation: fadeIn 1.2s;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
     #birthday-msg {
       font-size: 2.8rem;
@@ -260,8 +270,8 @@
       display: inline-block;
       margin: 1em 0 0.2em 0;
       font-size: 1.2em;
-      color: #ffe066;
-      text-shadow: 0 0 12px #fff6b0, 0 0 8px #a259ff;
+      color: #7cf6ff;
+      text-shadow: 0 0 12px #b0f6ff, 0 0 8px #a259ff;
       animation: dreamsFadeIn 2.2s 1.2s both;
       letter-spacing: 1px;
     }
@@ -270,7 +280,7 @@
       animation: twinkle 1.2s infinite alternate;
       margin: 0 0.2em;
       font-size: 1.3em;
-      filter: drop-shadow(0 0 8px #ffe066);
+      filter: drop-shadow(0 0 8px #7cf6ff);
     }
     .dreams-come-true .star:last-child {
       animation-delay: 0.6s;
@@ -307,7 +317,7 @@
     .letter-paper {
       background: #fffbe9;
       border-radius: 18px;
-      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #ffe066;
+      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #7cf6ff;
       padding: 2.5em 2em 2em 2.5em;
       max-width: 540px;
       width: 95vw;
@@ -315,7 +325,7 @@
       font-family: 'Dancing Script', 'Caveat', 'Pacifico', cursive, 'Segoe Script', sans-serif;
       font-size: 1.18em;
       color: #4b2e83;
-      border: 2px solid #ffe066;
+      border: 2px solid #7cf6ff;
       position: relative;
       overflow: hidden;
     }
@@ -339,7 +349,7 @@
         to bottom,
         transparent 0px,
         transparent 23px,
-        #ffe06633 24px,
+        #7cf6ff33 24px,
         transparent 25px
       );
       pointer-events: none;
@@ -357,14 +367,14 @@
     .birthday-letter-paper {
       background: #fffbe9;
       border-radius: 18px;
-      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #ffe066;
+      box-shadow: 0 4px 32px #a259ff33, 0 1.5px 0 #7cf6ff;
       padding: 2.5em 2em 2em 2.5em;
       max-width: 540px;
       width: 95vw;
       font-family: 'Dancing Script', 'Caveat', 'Pacifico', cursive, 'Segoe Script', sans-serif;
       font-size: 1.18em;
       color: #4b2e83;
-      border: 2px solid #ffe066;
+      border: 2px solid #7cf6ff;
       position: relative;
       overflow: hidden;
     }
@@ -376,7 +386,7 @@
         to bottom,
         transparent 0px,
         transparent 23px,
-        #ffe06633 24px,
+        #7cf6ff33 24px,
         transparent 25px
       );
       pointer-events: none;
@@ -404,7 +414,7 @@
       padding: 0.9em 2.2em;
       font-size: 1.2em;
       font-family: 'Montserrat', cursive, sans-serif;
-      background: linear-gradient(90deg, #a259ff, #ffb6ff, #ffe066);
+      background: linear-gradient(90deg, #a259ff, #ffb6ff, #7cf6ff);
       color: #fff;
       border: none;
       border-radius: 30px;
@@ -417,7 +427,7 @@
     }
     .animated-letter-btn:hover {
       transform: scale(1.07) rotate(-2deg);
-      box-shadow: 0 8px 32px #a259ff66;
+      box-shadow: 0 8px 32px #a259ff66, 0 0 16px #7cf6ff;
     }
     @keyframes pulseBtn {
       0% { box-shadow: 0 4px 18px #a259ff44; }
@@ -426,7 +436,7 @@
     .letter-page {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(30,0,58,0.85);
+      background: rgba(30, 0, 58, 0.85);
       z-index: 9999;
       display: flex;
       justify-content: center;
@@ -519,7 +529,7 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 1.1em;
       margin-bottom: 0.3em;
-      color: #ddda39;
+      color: #7cf6ff;
       letter-spacing: 1px;
     }
     .progress-bar-bg {
@@ -535,23 +545,29 @@
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #a259ff, #ffb6ff, #ffe066);
+      background: linear-gradient(90deg, #a259ff, #ffb6ff, #7cf6ff);
       border-radius: 10px;
       transition: width 0.6s cubic-bezier(.4,2,.3,1);
+      box-shadow: 0 0 16px #7cf6ff, 0 0 8px #a259ff;
+      animation: progressGlow 2s infinite alternate;
+    }
+    @keyframes progressGlow {
+      0% { box-shadow: 0 0 8px #7cf6ff, 0 0 4px #a259ff;}
+      100% { box-shadow: 0 0 24px #7cf6ff, 0 0 16px #a259ff;}
     }
     .confetti-btn {
       display: block;
       margin: 2em auto 1em auto;
       padding: 0.7em 1.5em;
       font-size: 2em;
-      background: linear-gradient(90deg, #ffe066, #ffb6ff, #a259ff);
+      background: linear-gradient(90deg, #7cf6ff, #ffb6ff, #a259ff);
       color: #fff;
       border: none;
       border-radius: 2em;
       box-shadow: 0 4px 18px #a259ff44;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      animation: pulseBtn 1.2s infinite alternate;
+      animation: pulseBtn 1.2s infinite alternate, rotateBtn 4s linear infinite;
       font-weight: bold;
       letter-spacing: 0.15em;
     }
@@ -562,6 +578,11 @@
     @keyframes pulseBtn {
       0% { box-shadow: 0 4px 18px #a259ff44; }
       100% { box-shadow: 0 8px 32px #ffb6ff88; }
+    }
+    @keyframes rotateBtn {
+      0% { transform: rotate(-2deg);}
+      50% { transform: rotate(2deg);}
+      100% { transform: rotate(-2deg);}
     }
     .bts-quote {
       margin: 2em auto 1em auto;
@@ -574,23 +595,91 @@
     .bts-credit {
       display: block;
       font-size: 0.9em;
-      color: #ffe066;
+      color: #7cf6ff;
       margin-top: 0.2em;
       font-family: 'Montserrat', sans-serif;
     }
-    #sound-prompt {
+    /* Add these styles for the birthday screen and animations */
+    .birthday-glow-text {
+      font-family: 'Dancing Script', 'Pacifico', cursive, sans-serif;
+      font-size: 4em;
+      color: #ffe066;
+      text-shadow:
+        0 0 32px #ffb6ff,
+        0 0 16px #a259ff,
+        0 0 8px #fff,
+        0 0 40px #7cf6ff;
+      animation: popIn 1.2s cubic-bezier(.4,2,.3,1), birthdayGlow 2s infinite alternate;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg,#7cf6ff,#ffb6ff,#a259ff,#6e00ff,#7cf6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(60px);}
+      80% { opacity: 1; transform: scale(1.1) translateY(-10px);}
+      100% { opacity: 1; transform: scale(1) translateY(0);}
+    }
+    @keyframes birthdayGlow {
+      0% { text-shadow: 0 0 32px #ffb6ff, 0 0 16px #a259ff, 0 0 8px #fff, 0 0 40px #7cf6ff;}
+      100% { text-shadow: 0 0 60px #ffb6ff, 0 0 40px #7cf6ff, 0 0 20px #a259ff;}
+    }
+    .birthday-ballon-float {
+      position: absolute;
+      bottom: -80px;
+      animation: balloonUpCelebration 5s linear forwards;
+      will-change: transform, opacity;
+    }
+    @keyframes balloonUpCelebration {
+      0% { transform: translateY(0) scale(1) rotate(-8deg);}
+      80% { opacity: 1;}
+      100% { transform: translateY(-110vh) scale(1.1) rotate(8deg); opacity: 0.7;}
+    }
+    .big-heart {
+      display: inline-block;
+      animation: heartBeat 1.2s infinite, glowHeart 2s infinite alternate;
+      filter: drop-shadow(0 0 18px #ffb6ff) drop-shadow(0 0 8px #ffe066);
+    }
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1);}
+      20% { transform: scale(1.2);}
+      40% { transform: scale(0.95);}
+      60% { transform: scale(1.1);}
+      80% { transform: scale(0.98);}
+    }
+    @keyframes glowHeart {
+      from { filter: drop-shadow(0 0 8px #ffb6ff);}
+      to { filter: drop-shadow(0 0 24px #ffb6ff) drop-shadow(0 0 12px #ffe066);}
+    }
+    /* Particle background effect */
+    .css-particles-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      background: rgba(30, 0, 58, 0.85);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .css-particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.13;
+      background: radial-gradient(circle, #7cf6ff 0%, #a259ff 100%);
+      animation: particleFloat 18s linear infinite;
+    }
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.13;
+      }
+      50% {
+        opacity: 0.22;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0.13;
+      }
     }
   </style>
 </head>
@@ -672,13 +761,9 @@
 
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:100;"></canvas>
+  <div id="custom-message" class="hidden" style="margin-top:1.5em; font-size:1.4em; color:#7cf6ff; font-family:'Pacifico',cursive;"></div>
 
-  <!-- Remove all previous audio unlock and play logic, and use this universal handler -->
-
-  <!-- Place these audio elements before your closing </body> tag -->
-  <audio id="confetti-sound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3b.mp3" preload="auto"></audio>
-  <audio id="birthday-sound" src="song.mp3" preload="auto"></audio>
-  <audio id="countdown-music" src="loop.mp3" preload="auto" loop></audio>
+  <div class="css-particles-bg"></div>
 
   <script>
     // Set the countdown to May 30, 2:15pm of the current year
@@ -700,21 +785,75 @@
       }, 10000); // 10 seconds = 10000 ms
     }
 
+    function showBirthdayScreen() {
+      // Create overlay
+      let overlay = document.createElement('div');
+      overlay.id = 'birthday-blast-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.background = 'rgba(30,0,58,0.92)';
+      overlay.style.zIndex = 99999;
+      overlay.style.display = 'flex';
+      overlay.style.flexDirection = 'column';
+      overlay.style.justifyContent = 'center';
+      overlay.style.alignItems = 'center';
+      overlay.style.transition = 'opacity 1.2s';
+      overlay.style.opacity = '1';
+
+      // Animated text
+      let msg = document.createElement('div');
+      msg.innerHTML = `
+        <span class="birthday-glow-text">
+          Happy Birthday Varsha!
+        </span>
+        <div style="margin-top:1em;">
+          <span class="big-heart" style="font-size:2.5em;animation-delay:0s;">💖</span>
+          <span class="big-heart" style="font-size:2.5em;animation-delay:.3s;">💜</span>
+          <span class="big-heart" style="font-size:2.5em;animation-delay:.6s;">💗</span>
+          <span class="big-heart" style="font-size:2.5em;animation-delay:.9s;">💙</span>
+        </div>
+      `;
+      overlay.appendChild(msg);
+
+      // Balloons and party poppers
+      for (let i = 0; i < 18; i++) {
+        let emoji = document.createElement('span');
+        emoji.textContent = ['🎈','🎉','🎊'][i%3];
+        emoji.className = 'birthday-ballon-float';
+        emoji.style.left = Math.random()*95 + 'vw';
+        emoji.style.bottom = '-80px';
+        emoji.style.fontSize = (2.5 + Math.random()*2) + 'rem';
+        emoji.style.animationDelay = (Math.random()*2) + 's';
+        overlay.appendChild(emoji);
+      }
+
+      document.body.appendChild(overlay);
+
+      // Remove overlay after 5 seconds
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          // Show your normal birthday message and wishes
+          birthdayMsg.classList.remove("hidden");
+          wishExtra.classList.remove("hidden");
+        }, 1200);
+      }, 5000);
+    }
+
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
       if (distance <= 0) {
         clearInterval(timer);
-        countdownEl.innerHTML = "🎉 It's Varsha's Birthday! 🎉";
         titleEl.classList.add("hidden");
         mainCard.classList.add("hidden");
-        birthdayMsg.classList.remove("hidden");
-        wishExtra.classList.remove("hidden");
-        startConfetti();
-        playBirthdaySound();
-        stopCountdownMusic(); // Stop the music when countdown ends
-        // Show the "A letter by me" button after countdown finishes
+        wishExtra.classList.add("hidden");
+        showBirthdayScreen();
         document.getElementById('open-letter-btn').classList.remove('hidden');
       } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -722,7 +861,7 @@
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        countdownEl.innerHTML = 
+        countdownEl.innerHTML =
           `<span style="color:#ffe066;">${days}d</span> 
            <span style="color:#ffb6ff;">${hours}h</span> 
            <span style="color:#a259ff;">${minutes}m</span> 
@@ -734,6 +873,14 @@
       const elapsed = now - startDate;
       let percent = Math.min(Math.max((elapsed / total) * 100, 0), 100);
       document.getElementById('progress-bar').style.width = percent + "%";
+
+      // Show custom message when less than 1 day is left
+      if (distance < 24 * 60 * 60 * 1000 && distance > 0) { // less than 1 day left
+        document.getElementById('custom-message').classList.remove('hidden');
+        document.getElementById('custom-message').textContent = "Almost there! Get ready for a magical day! ✨";
+      } else {
+        document.getElementById('custom-message').classList.add('hidden');
+      }
     }
 
     const timer = setInterval(updateCountdown, 1000);
@@ -879,7 +1026,6 @@
     }
 
     function startConfettiRain() {
-      playConfettiSound();
       createConfettiParticles(80);
       confettiActive = true;
       fadeAlpha = 1;
@@ -955,103 +1101,21 @@
       <span class="bts-credit">${quoteData.credit}</span>
     `;
 
-    // Universal unlock and play on first interaction
-    let soundUnlocked = false;
-    function unlockAndPlayAllAudio() {
-      if (soundUnlocked) return;
-      soundUnlocked = true;
-
-      // Try to play and pause all audio to unlock them
-      ['confetti-sound', 'birthday-sound', 'countdown-music'].forEach(id => {
-        const audio = document.getElementById(id);
-        if (audio) {
-          audio.volume = 0.5;
-          audio.play().then(() => audio.pause()).catch(()=>{});
-        }
-      });
-
-      // Start countdown music after unlock
-      setTimeout(() => {
-        const music = document.getElementById('countdown-music');
-        if (music) {
-          music.currentTime = 0;
-          music.volume = 0.5;
-          music.play().catch(()=>{});
-        }
-      }, 200);
-    }
-
-    // Attach to any click/touch anywhere
-    window.addEventListener('pointerdown', unlockAndPlayAllAudio, { once: true });
-
-    // Play confetti sound when confetti button is clicked
-    function playConfettiSound() {
-      const confettiAudio = document.getElementById('confetti-sound');
-      if (confettiAudio) {
-        confettiAudio.currentTime = 0;
-        confettiAudio.play().catch(()=>{});
+    // Add dreamy floating particles
+    (function(){
+      const container = document.querySelector('.css-particles-bg');
+      for(let i=0; i<22; i++) {
+        const p = document.createElement('div');
+        p.className = 'css-particle';
+        const size = Math.random() * 32 + 18;
+        p.style.width = p.style.height = size + 'px';
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.bottom = (-Math.random() * 40) + 'vh';
+        p.style.animationDuration = (14 + Math.random()*10) + 's';
+        p.style.animationDelay = (-Math.random()*18) + 's';
+        container.appendChild(p);
       }
-    }
-
-    // Play birthday sound when countdown ends
-    function playBirthdaySound() {
-      const birthdayAudio = document.getElementById('birthday-sound');
-      if (birthdayAudio) {
-        birthdayAudio.currentTime = 0;
-        birthdayAudio.play().catch(()=>{});
-      }
-    }
-
-    // Play countdown music in loop during countdown
-    function playCountdownMusic() {
-      const music = document.getElementById('countdown-music');
-      if (music) {
-        music.volume = 0.5;
-        music.play().catch(()=>{});
-      }
-    }
-
-    // Pause countdown music when birthday is reached
-    function stopCountdownMusic() {
-      const music = document.getElementById('countdown-music');
-      if (music) {
-        music.pause();
-        music.currentTime = 0;
-      }
-    }
-
-    // Sound prompt for first interaction
-    document.getElementById('sound-prompt').addEventListener('click', function() {
-      this.style.display = 'none';
-      unlockAndPlayAllAudio();
-    });
-
-    // Hide the prompt and unlock sound on first pointerdown
-    function hideSoundPromptAndUnlock() {
-      const prompt = document.getElementById('sound-prompt-message');
-      if (prompt) prompt.style.display = 'none';
-      unlockAndPlayAllAudio();
-      window.removeEventListener('pointerdown', hideSoundPromptAndUnlock);
-    }
-    window.addEventListener('pointerdown', hideSoundPromptAndUnlock);
+    })();
   </script>
-
-  <!-- Add this just before the closing </body> tag, after all other content -->
-  <div id="sound-prompt-message" style="
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    background: rgba(59, 1, 114, 0.85);
-    color: #d4aa00;
-    text-align: center;
-    font-size: 1.3em;
-    padding: 1em 0 1.2em 0;
-    z-index: 9999;
-    cursor: pointer;
-    transition: opacity 0.4s;
-  ">
-    🎵 Tap or click anywhere to start music 🎵
-  </div>
 </body>
 </html>
