@@ -717,10 +717,8 @@
   <!-- Countdown and wish sections -->
   <div class="glass-card" id="main-card">
     <h1 id="title">Countdown to a Special Day</h1>
-    
     <!-- Countdown timer -->
     <div id="countdown" aria-live="polite" style="text-align:center; font-size:2.3rem; margin-top:1em;"></div>
-    
     <!-- Progress bar until birthday -->
     <div class="progress-container">
       <div class="progress-label">Time until your Birthday</div>
@@ -728,12 +726,10 @@
         <div id="progress-bar" class="progress-bar-fill"></div>
       </div>
     </div>
-    
     <!-- Confetti button bar -->
     <button id="confetti-btn" class="confetti-btn" aria-label="Celebrate!">
       🎉 🎊 🥳 🎂 🎶 💜
     </button>
-    
     <!-- BTS Quote -->
     <div class="bts-quote" id="bts-quote" style="margin-top:2em;">
       <span></span>
@@ -755,7 +751,6 @@
         style="width:120px;height:120px;object-fit:cover;border-radius:50%;box-shadow:0 0 24px #a259ff88, 0 0 8px #ffb6ff;">
       <button id="open-letter-btn" class="animated-letter-btn hidden" style="margin-left:2em;">A letter by me</button>
     </div>
-    <!-- Replace your wish text block with this for custom fonts: -->
     <p class="wish-text enhanced-fade">
       <span style="font-family: 'Dancing Script', cursive; font-size:2.2em; display:block; margin-bottom:0.3em;">
         Happy Birthday, Varsha!
@@ -786,7 +781,6 @@
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:100;"></canvas>
   <div id="custom-message" class="hidden" style="margin-top:1.5em; font-size:1.4em; color:#7cf6ff; font-family:'Pacifico',cursive;"></div>
-
   <div class="css-particles-bg"></div>
 
   <script>
@@ -800,6 +794,103 @@
     const wishExtra = document.getElementById("wish-extra");
     const titleEl = document.getElementById("title");
     const mainCard = document.getElementById("main-card");
+
+    // Show advanced birthday overlay for 5s on every visit until countdown ends
+    function showAdvancedBirthdayOverlay() {
+      if (localStorage.getItem('birthdayOverlayDismissed') === '1') return;
+
+      // Create overlay
+      let overlay = document.createElement('div');
+      overlay.id = 'advanced-birthday-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.background = 'rgba(0,0,0,0.98)'; // Fully hide background
+      overlay.style.zIndex = 100000;
+      overlay.style.display = 'flex';
+      overlay.style.flexDirection = 'column';
+      overlay.style.justifyContent = 'center';
+      overlay.style.alignItems = 'center';
+      overlay.style.transition = 'opacity 1.2s';
+      overlay.style.opacity = '1';
+
+      // Glassmorphism card with gold glow
+      overlay.innerHTML = `
+        <div style="
+          background: rgba(30,30,30,0.85);
+          border-radius: 2.5em;
+          box-shadow: 0 0 48px 8px #000, 0 0 0 6px #FFD70088, 0 0 32px 8px #FFD70055;
+          border: 3.5px solid #FFD700;
+          padding: 3.5em 3em 2.5em 3em;
+          max-width: 520px;
+          width: 92vw;
+          text-align: center;
+          position: relative;
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          animation: fadeIn 1.2s;
+          ">
+          <span style="
+            font-family: 'Dancing Script', 'Pacifico', cursive, serif;
+            font-size: 3.2em;
+            color: #FFD700;
+            text-shadow: 0 0 32px #FFD700, 0 0 16px #fff, 0 0 40px #bfa14a;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 0.5em;
+            background: linear-gradient(90deg,#FFD700,#fffbe9,#bfa14a,#FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">
+            🎉 Advanced Happy Birthday Varsha! 🎂
+          </span>
+          <div style="margin: 1.5em 0 1em 0;">
+            <span style="font-size:2.5em;filter:drop-shadow(0 0 12px #FFD700);margin:0 0.2em;">💛</span>
+            <span style="font-size:2.5em;filter:drop-shadow(0 0 12px #fffbe9);margin:0 0.2em;">🖤</span>
+            <span style="font-size:2.5em;filter:drop-shadow(0 0 12px #FFD700);margin:0 0.2em;">💛</span>
+          </div>
+          <div style="margin-top:2em;">
+            <span style="font-size:1.5em;color:#FFD700;text-shadow:0 0 16px #fffbe9;">Wishing you a magical, golden year ahead!</span>
+          </div>
+          <div style="margin-top:2.5em;">
+            <span style="font-size:1.2em;color:#fffbe9;opacity:0.8;">You are precious, unique, and golden! ✨</span>
+          </div>
+          <div style="position:absolute;inset:0;pointer-events:none;z-index:2;">
+            <!-- Gold shine overlay -->
+            <div style="
+              position:absolute;top:0;left:0;width:100%;height:100%;
+              border-radius:2.5em;
+              box-shadow:0 0 80px 20px #FFD70055 inset,0 0 40px 10px #fffbe933 inset;
+              pointer-events:none;
+            "></div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      // Hide after 5 seconds
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 1200);
+      }, 5000);
+    }
+
+    // Call overlay on load if countdown not ended
+    (function(){
+      const now = Date.now();
+      if (now < targetDate) {
+        showAdvancedBirthdayOverlay();
+      } else {
+        // If countdown ended, never show again
+        localStorage.setItem('birthdayOverlayDismissed', '1');
+      }
+    })();
 
     function showLetterAfterDelay() {
       setTimeout(() => {
@@ -879,6 +970,10 @@
         wishExtra.classList.add("hidden");
         showBirthdayScreen();
         document.getElementById('open-letter-btn').classList.remove('hidden');
+        // Hide advanced overlay forever
+        localStorage.setItem('birthdayOverlayDismissed', '1');
+        const advOverlay = document.getElementById('advanced-birthday-overlay');
+        if (advOverlay) advOverlay.remove();
       } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
