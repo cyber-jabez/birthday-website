@@ -453,10 +453,6 @@
       transform: scale(1.07) rotate(-2deg);
       box-shadow: 0 8px 32px #a259ff66, 0 0 16px #7cf6ff;
     }
-    @keyframes pulseBtn {
-      0% { box-shadow: 0 4px 18px #a259ff44; }
-      100% { box-shadow: 0 8px 32px #ffb6ff88; }
-    }
     .letter-page {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -705,6 +701,59 @@
         opacity: 0.13;
       }
     }
+    /* Motivational message bar */
+    .chaos-msg-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      background: rgba(49,12,99,0.92);
+      color: #ffe066;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5em;
+      padding: 0.7em 2em;
+      border-radius: 2em;
+      box-shadow: 0 0 24px #a259ff88;
+      z-index: 10001;
+      transition: opacity 0.5s;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .chaos-msg-bar.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    /* Starfall styles */
+    .starfall-container {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .starfall-star {
+      position: absolute;
+      color: #fffbe9;
+      font-size: 1.2em;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 8px #ffe066) drop-shadow(0 0 4px #fff);
+      animation: starfall 3.5s linear forwards;
+      will-change: transform, opacity;
+    }
+    @keyframes starfall {
+      0% { opacity: 0.7; transform: translateY(-40px) scale(1);}
+      90% { opacity: 1;}
+      100% { opacity: 0; transform: translateY(110vh) scale(1.2);}
+    }
+    /* Glitch effect */
+    .glitch {
+      animation: subtleGlitch 0.1s steps(2, end) 1;
+    }
+    @keyframes subtleGlitch {
+      0% { text-shadow: 2px 0 #a259ff, -2px 0 #7cf6ff; }
+      50% { text-shadow: -2px 0 #ffb6ff, 2px 0 #6e00ff; }
+      100% { text-shadow: none; }
+    }
   </style>
 </head>
 <body>
@@ -783,9 +832,13 @@
   <div id="custom-message" class="hidden" style="margin-top:1.5em; font-size:1.4em; color:#7cf6ff; font-family:'Pacifico',cursive;"></div>
   <div class="css-particles-bg"></div>
 
+  <!-- Add these just before your main-card div -->
+  <div id="chaos-msg-bar" class="chaos-msg-bar"></div>
+  <div id="starfall-container" class="starfall-container"></div>
+
   <script>
     // Set the countdown to May 30, 2:15pm of the current year
-    const targetDate = new Date(new Date().getFullYear(), 5, 4, 0, 0, 0, 0).getTime();
+    const targetDate = new Date(new Date().getFullYear(), 5, 3, 21, 56, 0, 0).getTime();
     // Start the progress bar from 5 days before the target date
     const startDate = targetDate - 5 * 24 * 60 * 60 * 1000; // 5 days in ms
 
@@ -959,10 +1012,68 @@
       }, 5000);
     }
 
+    // --- Chaos Mode Additions ---
+    // 1. Motivational/Birthday Messages
+    const chaosMessages = [
+      "You are golden! ✨",
+      "Almost there... get ready to shine! 🌟",
+      "Wishing you all the happiness in the world! 💜",
+      "whatever things happens in life always be happy! 🎉",
+      "You make the world brighter! 💫",
+      "Smile, it's almost your day! 😊",
+      "don't u miss the school days! 💜",
+      "You are a star in someone's universe! 🌠",
+      "Keep dreaming, keep shining! ✨"
+    ];
+    let chaosMsgInterval = null;
+    let chaosMsgBar = document.getElementById('chaos-msg-bar');
+    function showRandomChaosMessage() {
+      chaosMsgBar.textContent = chaosMessages[Math.floor(Math.random() * chaosMessages.length)];
+      chaosMsgBar.classList.add('active');
+      setTimeout(() => chaosMsgBar.classList.remove('active'), 5000);
+    }
+
+    // 2. Starfall
+    let starfallInterval = null;
+    const starfallContainer = document.getElementById('starfall-container');
+    function spawnStar() {
+      const star = document.createElement('span');
+      star.className = 'starfall-star';
+      star.textContent = ['★','✦','✧','✩','✪','✫','✬','✯'][Math.floor(Math.random()*8)];
+      star.style.left = Math.random()*98 + 'vw';
+      star.style.fontSize = (1 + Math.random()*1.5) + 'em';
+      star.style.opacity = 0.7 + Math.random()*0.3;
+      starfallContainer.appendChild(star);
+      setTimeout(() => star.remove(), 3500);
+    }
+
+    // --- Chaos Mode Control ---
+    let chaosMode = false;
+    function startChaosMode() {
+      if (chaosMode) return;
+      chaosMode = true;
+      // Motivational messages
+      showRandomChaosMessage();
+      chaosMsgInterval = setInterval(showRandomChaosMessage, 30000);
+      // Starfall
+      starfallInterval = setInterval(spawnStar, 600);
+    }
+    function stopChaosMode() {
+      chaosMode = false;
+      if (chaosMsgInterval) clearInterval(chaosMsgInterval);
+      chaosMsgBar.classList.remove('active');
+      if (starfallInterval) clearInterval(starfallInterval);
+    }
+
+    // --- Countdown and Chaos Trigger ---
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = targetDate - now;
-
+      if (distance < 5 * 60 * 1000 && distance > 0) {
+        startChaosMode();
+      } else {
+        stopChaosMode();
+      }
       if (distance <= 0) {
         clearInterval(timer);
         titleEl.classList.add("hidden");
@@ -970,7 +1081,6 @@
         wishExtra.classList.add("hidden");
         showBirthdayScreen();
         document.getElementById('open-letter-btn').classList.remove('hidden');
-        // Hide advanced overlay forever
         localStorage.setItem('birthdayOverlayDismissed', '1');
         const advOverlay = document.getElementById('advanced-birthday-overlay');
         if (advOverlay) advOverlay.remove();
@@ -980,28 +1090,38 @@
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        countdownEl.innerHTML =
-          `<span style="color:#ffe066;">${days}d</span> 
-           <span style="color:#ffb6ff;">${hours}h</span> 
-           <span style="color:#a259ff;">${minutes}m</span> 
-           <span style="color:#fff;">${seconds}s</span> remaining`;
+        // 3. Countdown Glitch (only in last 5 minutes)
+        if (chaosMode) {
+          let html =
+            `<span style="color:#ffe066;">${days}d</span> 
+             <span style="color:#ffb6ff;">${hours}h</span> 
+             <span style="color:#a259ff;">${minutes}m</span> 
+             <span style="color:#fff;">${seconds}s</span> remaining`;
+          countdownEl.innerHTML = `<span class="glitch">${html}</span>`;
+          setTimeout(() => {
+            countdownEl.innerHTML = html;
+          }, 100);
+        } else {
+          countdownEl.innerHTML =
+            `<span style="color:#ffe066;">${days}d</span> 
+             <span style="color:#ffb6ff;">${hours}h</span> 
+             <span style="color:#a259ff;">${minutes}m</span> 
+             <span style="color:#fff;">${seconds}s</span> remaining`;
+        }
       }
-
-      // Progress bar logic: from 5 days before birthday to birthday
+      // Progress bar logic
       const total = targetDate - startDate;
       const elapsed = now - startDate;
       let percent = Math.min(Math.max((elapsed / total) * 100, 0), 100);
       document.getElementById('progress-bar').style.width = percent + "%";
-
       // Show custom message when less than 1 day is left
-      if (distance < 24 * 60 * 60 * 1000 && distance > 0) { // less than 1 day left
+      if (distance < 24 * 60 * 60 * 1000 && distance > 0) {
         document.getElementById('custom-message').classList.remove('hidden');
         document.getElementById('custom-message').textContent = "Almost there! Get ready for a magical day! ✨";
       } else {
         document.getElementById('custom-message').classList.add('hidden');
       }
     }
-
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
